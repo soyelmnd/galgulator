@@ -2,5 +2,8 @@
   "name": "galgulator",
   "authors": [
     "soyelmnd <minhnd.it@gmail.com>"
-  ]
+  ],
+  "devDependencies": {
+    "bootstrap": "~3.3.5"
+  }
 }
