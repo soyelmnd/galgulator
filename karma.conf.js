@@ -1,7 +1,7 @@
 var pkg = require('./package.json');
 
-var srcFiles = pkg.path.source.script + '/**';
-var testFiles = pkg.path.test.unit + '/**/*.js';
+var srcFiles = pkg.path.source.script + '**';
+var testFiles = pkg.path.test.unit + '**/*.js';
 
 module.exports = function(karmaConfig) {
   var config = {
@@ -18,11 +18,15 @@ module.exports = function(karmaConfig) {
     port: 9876,
     colors: true,
     logLevel: karmaConfig.LOG_INFO,
+    reporters: ['progress'],
     autoWatch: true,
     browsers: ['PhantomJS'],
     singleRun: false,
     concurrency: Infinity,
-    browserify: pkg.config.browserify
+    browserify: pkg.config.browserify,
+    watchify: {
+      poll: true
+    }
   };
 
   config.preprocessors[srcFiles] = ['browserify'];
