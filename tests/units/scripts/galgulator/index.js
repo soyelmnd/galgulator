@@ -21,4 +21,101 @@ describe('Galgulator', () => {
     //   to work by itself without any io via api
     expect(galgulator.addIO).toBeDefined();
   });
+
+  describe('basic queue', () => {
+    let galgulator;
+
+    // The idea is a calculator have a queue
+    //   and operator/digit is to be enqueued/dequeued
+    //   just as we type/clear
+    beforeEach(() => {
+      galgulator = new Galgulator();
+    });
+
+    it('should have basic queue methods', () => {
+      expect(galgulator.enqueue).toBeDefined();
+      expect(galgulator.dequeue).toBeDefined();
+      expect(galgulator.clear).toBeDefined();
+      expect(galgulator.resolve).toBeDefined();
+    });
+
+    it('should have basic queue work', (done) => {
+      // Let's start simple with
+      //   a string queue element
+      galgulator.enqueue('1');
+      galgulator.enqueue('1');
+      galgulator.enqueue('+');
+      galgulator.enqueue('2');
+      galgulator.enqueue('2');
+
+      galgulator.resolve().then(result => {
+        expect(result).toEqual(33);
+        done();
+      });
+    });
+
+    it('should be able to dequeue', (done) => {
+      galgulator.enqueue('1');
+      galgulator.enqueue('1');
+      galgulator.enqueue('+');
+      galgulator.enqueue('2');
+      galgulator.enqueue('2');
+      galgulator.enqueue('+');
+      galgulator.enqueue('3');
+      galgulator.dequeue();
+      galgulator.dequeue();
+
+      galgulator.resolve().then(result => {
+        expect(result).toEqual(33);
+        done();
+      });
+    });
+  });
+
+  describe('non-uniform expression', () => {
+    let galgulator;
+    beforeEach(() => {
+      galgulator = new Galgulator();
+    });
+
+    it('should handle trailing operators', (done) => {
+      galgulator.enqueue('1');
+      galgulator.enqueue('+');
+      galgulator.enqueue('2');
+      galgulator.enqueue('+');
+
+      galgulator.resolve().then(result => {
+        expect(result).toEqual(3);
+        done();
+      });
+    });
+  });
+
+  describe('complex operation', () => {
+    let galgulator;
+    beforeEach(() => {
+      galgulator = new Galgulator();
+    });
+
+    it('should handle Math.pow', (done) => {
+      galgulator.enqueue('2');
+      galgulator.enqueue('+');
+      galgulator.enqueue('2');
+      galgulator.enqueue('^');
+      galgulator.enqueue('2');
+      galgulator.enqueue('^');
+      galgulator.enqueue('2');
+      galgulator.enqueue('^');
+      galgulator.enqueue('2');
+      galgulator.enqueue('-');
+      galgulator.enqueue('2');
+      galgulator.enqueue('*');
+      galgulator.enqueue('2');
+
+      galgulator.resolve().then(result => {
+        expect(result).toEqual(65534);
+        done();
+      })
+    })
+  });
 })
