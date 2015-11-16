@@ -1,0 +1,80 @@
+<div class="galgulator">
+  <div class="history-stack">
+    <div class="state">1 + 1 =</div>
+  </div>
+  <div class="screen">
+    <div class="q">
+      <span>2</span>
+    </div>
+  </div>
+  <div class="keypad row clearfix">
+    <div class="basic pull-right col-sm-48">
+      <div class="row">{%
+        for key in [
+          ['(', 'op'],
+          [')', 'op'],
+          ['%', 'op'],
+          ['AC', 'fn'],
+
+          [7, 'no'],
+          [8, 'no'],
+          [9, 'no'],
+          [':', 'op'],
+
+          [4, 'no'],
+          [5, 'no'],
+          [6, 'no'],
+          ['x', 'op'],
+
+          [1, 'no'],
+          [2, 'no'],
+          [3, 'no'],
+          ['-', 'op'],
+
+          [0, 'no'],
+          ['.', 'ex'],
+          ['=', 'is'],
+          ['+', 'op'],
+        ]
+      %}
+        <div class="col-sm-21">
+          <button class="key {{ key[1] }}">{{ key[0] }}</button>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+    <div class="extended pull-left col-sm-36">
+      <div class="row">
+        <div class="col-sm-56">
+          <button class="key op">Rad/Deg</button>
+        </div>
+
+      {%
+        for key in [
+          ['x!', 'op'],
+
+          ['Inv', 'op'],
+          ['sin', 'op'],
+          ['ln', 'op'],
+
+          ['&Pi;', 'op'],
+          ['cos', 'op'],
+          ['log', 'op'],
+
+          ['e', 'op'],
+          ['tan', 'op'],
+          ['&radic;', 'op'],
+
+          ['ANS', 'op'],
+          ['EXP', 'op'],
+          ['x<sup>y</sup>', 'op'],
+        ]
+      %}
+        <div class="col-sm-28">
+          <button class="key {{ key[1] }}">{{ key[0] }}</button>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

@@ -7,6 +7,14 @@ try {
     , autoprefixer = require('gulp-autoprefixer')
     , sourcemaps = require('gulp-sourcemaps')
 
+    // view bundle with swig
+    , swig = require('gulp-swig')
+    , inject = require('gulp-inject')
+
+    // bundle with browserify
+    , browserify = require('browserify')
+    , source = require('vinyl-source-stream')
+
     // development server
     , connect = require('connect')
     , connectLr = require('connect-livereload')
@@ -14,6 +22,9 @@ try {
     , request = require('request')
     , serveStatic = require('serve-static')
     , tinyLr = require('tiny-lr')
+
+    // unit test n tdd
+    , karma = require('karma')
 } catch(e) {
   // There are times we forget to run `npm install`
   //   again and again, totally tolerable I guess
@@ -24,28 +35,74 @@ try {
 }
 
 var os = require('os')
+  , path = require('path')
   , pkg = require('./package.json');
 
+gulp.task('test', ['test.unit']);
 
-gulp.task('dev', ['dev.less', 'dev.watch', 'dev.server']);
+gulp.task('test.unit', function(done) {
+  var karmaServer = new karma.Server({
+    configFile: path.resolve(__dirname, './karma.conf.js')
+  }, done);
 
-gulp.task('dev.watch', function() {
-  gulp.watch(pkg.path.development.less + '/**', ['dev.less']);
+  karmaServer.start();
 });
 
-gulp.task('dev.less', function() {
-  return gulp.src(pkg.path.development.less + '/app.less')
+gulp.task('dev', [
+  'dev.theme', 'dev.view', 'dev.script',
+  'dev.watch', 'dev.server'
+]);
+
+gulp.task('dev.watch', function() {
+  gulp.watch(pkg.path.source.base + '/**/*.html', ['dev.view']);
+  gulp.watch(pkg.path.source.theme + '/**', ['dev.theme']);
+  gulp.watch(pkg.path.source.script + '/**', ['dev.script']);
+});
+
+gulp.task('dev.view', function() {
+  return gulp.src(pkg.path.source.base + '/index.html')
+    .pipe(swig(pkg.config.swig))
+    .pipe(inject(
+      gulp.src(
+        [
+          pkg.path.build.script + '/*.js',
+          pkg.path.build.theme + '/*.css'
+        ],
+        { read: false }
+      ),
+      {
+        addRootSlash: false,
+        ignorePath: pkg.path.build.base,
+        removeTags: true,
+        relative: false
+      }
+    ))
+    .pipe(gulp.dest(pkg.path.build.base));
+});
+
+gulp.task('dev.theme', function() {
+  return gulp.src(pkg.path.source.theme + '/app.less')
     .pipe(sourcemaps.init())
     .pipe(less(pkg.config.less || {}))
     .pipe(autoprefixer(pkg.config.autoprefixer || {}))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest(pkg.path.development.css))
+    .pipe(gulp.dest(pkg.path.build.theme))
+});
+
+gulp.task('dev.script', function() {
+  return browserify(
+      pkg.path.source.script + '/app.js',
+      pkg.config.browserify || {}
+    )
+    .bundle()
+    .pipe(source('app.js'))
+    .pipe(gulp.dest(pkg.path.build.script));
 });
 
 gulp.task('dev.server', function() {
   var port = argv.port || 1243
     , lrPort = argv.liveReloadPort || 12435
-    , root = pkg.path.development.base;
+    , root = pkg.path.build.base;
 
   var server = connect();
 
