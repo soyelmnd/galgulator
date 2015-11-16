@@ -59,7 +59,7 @@ gulp.task('dev.watch', function() {
   gulp.watch(pkg.path.source.script + '/**', ['dev.script']);
 });
 
-gulp.task('dev.view', function() {
+gulp.task('dev.view', ['dev.script', 'dev.theme'], function() {
   return gulp.src(pkg.path.source.base + '/index.html')
     .pipe(swig(pkg.config.swig))
     .pipe(inject(

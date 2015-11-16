@@ -38,7 +38,7 @@
         ]
       %}
         <div class="col-sm-21">
-          <button class="key {{ key[1] }}">{{ key[0] }}</button>
+          <button class="key {{ key[1] }}">{{ key[0] | safe }}</button>
         </div>
       {% endfor %}
       </div>
@@ -71,7 +71,7 @@
         ]
       %}
         <div class="col-sm-28">
-          <button class="key {{ key[1] }}">{{ key[0] }}</button>
+          <button class="key {{ key[1] }}">{{ key[0] | safe }}</button>
         </div>
       {% endfor %}
       </div>
