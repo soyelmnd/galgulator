@@ -1,25 +1,11 @@
 import Galgulator from '../../../../src/scripts/galgulator';
 import Eventist from '../../../../src/scripts/eventist';
+import IOAbstract from '../../../../src/scripts/galgulator/io/abstract';
 
 describe('Galgulator', () => {
-  it('should be defined', () => {
+  it('should be defined and instantiable', () => {
     expect(Galgulator).toBeDefined();
-  });
-
-  it('should be instantiable', () => {
-    let galgulator = new Galgulator();
-
-    expect(galgulator).toBeDefined();
-
-    // Should be an instance of eventist
-    //   so we can have `events` as a handy communication tool
-    expect(galgulator.id).toBeDefined();
-    expect(galgulator instanceof Eventist).toBeTruthy();
-
-    // A calculator should have io (screen, keypad)
-    //   and .. well, it should be smart enough
-    //   to work by itself without any io via api
-    expect(galgulator.addIO).toBeDefined();
+    expect(new Galgulator()).toBeDefined();
   });
 
   describe('basic queue', () => {
@@ -117,5 +103,48 @@ describe('Galgulator', () => {
         done();
       })
     })
+  });
+
+  describe('io', () => {
+    let galgulator;
+
+    beforeEach(() => {
+      galgulator = new Galgulator();
+    });
+
+    it('should be able to add io', () => {
+      // Shouldn't init an abstract,
+      //   but .. it's the ideal solution, by the way
+      let ioA = new IOAbstract()
+        , ioB = new IOAbstract();
+
+      spyOn(ioA, 'setGalgulator');
+      spyOn(ioB, 'setGalgulator');
+
+      galgulator.addIO(ioA).addIO(ioB);
+      expect(ioA.setGalgulator).toHaveBeenCalled();
+      expect(ioB.setGalgulator).toHaveBeenCalled();
+    });
+
+    it('should have basic characteristics', () => {
+      // Should be an instance of eventist
+      //   so we can have `events` as a handy communication tool
+      expect(galgulator.id).toBeDefined();
+      expect(galgulator instanceof Eventist).toBeTruthy();
+
+      // A calculator should have io (screen, keypad)
+      //   to not only work via api
+      expect(galgulator.addIO).toBeDefined();
+    });
+
+    it('should broadcast event when queue/dequeue', () => {
+      spyOn(galgulator, 'broadcast');
+
+      galgulator.enqueue('1');
+      expect(galgulator.broadcast.calls.count()).toEqual(1);
+
+      galgulator.dequeue();
+      expect(galgulator.broadcast.calls.count()).toEqual(2);
+    });
   });
 })

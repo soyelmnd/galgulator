@@ -30,6 +30,41 @@ export default class Eventist {
   }
 
   /**
+   * @name Eventist#watch
+   * @method
+   * @param {Eventist} child
+   * @return {Eventist} this
+   * @description
+   * The idea is we don't want an object to modify another object's variables
+   * So let it modify itself in the way it want to be. Will be called when
+   * there's a subscription request
+   */
+  watch(child) {
+    // Initialize the _eventistChildren list, if needed
+    this._eventistChildren = this._eventistChildren || {};
+    this._eventistChildren[child.id] = child;
+
+    return this;
+  }
+
+  /**
+   * @name Eventist#unwatch
+   * @method
+   * @param {Eventist} child
+   * @return {Eventist} this
+   * @see Eventist#match
+   */
+  unwatch(child) {
+    if(!this._eventistChildren || !this._eventistChildren[child.id]) {
+      throw new Error('Could not find this eventist in the parent children list');
+    }
+
+    delete this._eventistChildren[child.id];
+
+    return this;
+  }
+
+  /**
    * @name Eventist#subscribe
    * @method
    * @param {Eventist} parent
@@ -37,7 +72,6 @@ export default class Eventist {
    */
   subscribe(parent) {
     if(!this.id) {
-      console.error('Subscribe failed.', this);
       throw new Error('An eventist need an id to be able to subscribe');
     }
 
@@ -45,10 +79,7 @@ export default class Eventist {
       throw new Error('An eventist could only subscribe to another eventist');
     }
 
-    // Initialize the _eventistChildren list, if needed
-    parent._eventistChildren = parent._eventistChildren || {};
-    parent._eventistChildren[this.id] = this;
-
+    parent.watch(this);
     this._eventistParent = parent;
 
     return this;
@@ -72,11 +103,7 @@ export default class Eventist {
     //   to unsubscribe from current parent
     parent = parent || this._eventistParent;
 
-    if(!parent._eventistChildren || !parent._eventistChildren[this.id]) {
-      throw new Error('Could not find this eventist in the parent children list');
-    }
-
-    delete parent._eventistChildren[this.id];
+    parent.unwatch(this);
     this._eventistParent = null;
 
     return this;

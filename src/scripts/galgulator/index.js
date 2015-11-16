@@ -1,23 +1,48 @@
 import Eventist from '../eventist';
 import Promise from '../promise';
 
+/**
+ * @name Galgulator
+ * @class
+ * @extends Eventist
+ */
 export default class Galgulator extends Eventist {
   constructor() {
     super();
+
+    this.ios = [];
     this.queue = [];
   }
 
   addIO(io) {
+    io.setGalgulator(this);
+    this.ios.push(io);
+
+    return this;
   }
 
   enqueue(op) {
     op = op.trim();
-    op && this.queue.push(op);
+    if(op) {
+      this.queue.push(op);
+
+      this.broadcast('enqueue', {
+        queue: this.queue,
+        op: op
+      });
+    }
     return this;
   }
 
   dequeue() {
-    this.queue.length && this.queue.pop();
+    if(this.queue.length) {
+      let op = this.queue.pop();
+
+      this.broadcast('dequeue', {
+        queue: this.queue,
+        op: op
+      })
+    }
     return this;
   }
 

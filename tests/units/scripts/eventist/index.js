@@ -37,7 +37,7 @@ describe('Eventist', () => {
     // A call from ancestor
     //   should trigger callbacks
     //   in all 3
-    ancestor.broadcast('say');
+    ancestor.broadcast('say', {});
 
     expect(ancestorCallback).toHaveBeenCalled();
     expect(ancestorCallback.calls.count()).toEqual(1);
@@ -51,7 +51,7 @@ describe('Eventist', () => {
     // .. and from child
     //   should trigger callback
     //   from all 3
-    child.emit('say');
+    child.emit('say', {});
 
     expect(childCallback.calls.count()).toEqual(2);
     expect(parentCallback.calls.count()).toEqual(2);
@@ -60,7 +60,7 @@ describe('Eventist', () => {
     // .. now down from parent
     //   should trigger callback
     //   from parent and child
-    parent.broadcast('say');
+    parent.broadcast('say', {});
 
     expect(ancestorCallback.calls.count()).toEqual(2);
     expect(parentCallback.calls.count()).toEqual(3);
@@ -69,7 +69,7 @@ describe('Eventist', () => {
     // .. finally from parent upward
     //   should trigger callback
     //   from parent and ancestor
-    parent.emit('say');
+    parent.emit('say', {});
 
     expect(ancestorCallback.calls.count()).toEqual(3);
     expect(parentCallback.calls.count()).toEqual(4);
