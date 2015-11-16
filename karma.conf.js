@@ -1,6 +1,6 @@
 var pkg = require('./package.json');
 
-var srcFiles = pkg.path.source.script + '/app.js';
+var srcFiles = pkg.path.source.script + '/**';
 var testFiles = pkg.path.test.unit + '/**/*.js';
 
 module.exports = function(karmaConfig) {
