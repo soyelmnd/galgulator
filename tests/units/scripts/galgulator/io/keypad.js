@@ -9,6 +9,6 @@ describe('IOKeypad', () => {
   it('should be instantiable', () => {
     let keypad = new IOKeypad();
     expect(keypad).toBeDefined();
-    expect(keypad instanceof IOAbstract).toBeDefined();
-  })
+    expect(keypad instanceof IOAbstract).toBeTruthy();
+  });
 });

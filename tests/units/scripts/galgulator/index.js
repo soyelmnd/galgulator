@@ -137,7 +137,7 @@ describe('Galgulator', () => {
       expect(galgulator.addIO).toBeDefined();
     });
 
-    it('should broadcast event when queue/dequeue', () => {
+    it('should broadcast event', (done) => {
       spyOn(galgulator, 'broadcast');
 
       galgulator.enqueue('1');
@@ -145,6 +145,14 @@ describe('Galgulator', () => {
 
       galgulator.dequeue();
       expect(galgulator.broadcast.calls.count()).toEqual(2);
+
+      galgulator.clear();
+      expect(galgulator.broadcast.calls.count()).toEqual(3);
+
+      galgulator.resolve().then(() => {
+        expect(galgulator.broadcast.calls.count()).toEqual(4);
+        done();
+      });
     });
   });
 })

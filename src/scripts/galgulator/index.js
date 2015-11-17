@@ -47,15 +47,27 @@ export default class Galgulator extends Eventist {
   }
 
   clear() {
+    let exQueue = this.queue;
+
     this.queue = [];
+
+    this.broadcast('clear', {
+      queue: this.queue,
+      exQueue: exQueue
+    });
+
     return this;
   }
 
   resolve() {
     let expression = this.queue.join('');
+    let self = this;
 
     // Remove spaces, trailing operators, and redundant 0
     expression = expression.replace(/\s+|\b0+|[^\d]+$/g, '');
+
+    // Convert to js friendly
+    expression = expression.replace(/x/gi, '*').replace(/:/gi, '/');
 
     // Handle pow by transforming
     //   x^y^z to Math.pow(x, Math.pow(y, z))
@@ -73,7 +85,14 @@ export default class Galgulator extends Eventist {
     });
 
     return new Promise((resolve, reject) => {
-      resolve(new Function('return ' + expression)())
+      let result = new Function('return ' + expression)();
+
+      self.queue = [result];
+      self.broadcast('resolve', {
+        queue: self.queue
+      });
+
+      resolve(result);
     })
   }
 }

@@ -2,14 +2,14 @@ import IOAbstract from './abstract';
 
 export default class IOScreen extends IOAbstract {
   constructor(el) {
-    super()
+    super();
     el && this.attachTo(el);
   }
 
   attachTo(el) {
     this.el = el;
 
-    this.on('enqueue dequeue', (evt, data) => {
+    this.on('enqueue dequeue clear resolve', (evt, data) => {
       el.innerHTML = this.render(data);
     });
   }
@@ -46,7 +46,7 @@ export default class IOScreen extends IOAbstract {
     // Wrap around no and op
     html = html
       .replace(/\d+/g, '<span class="no">$&</span>')
-      .replace(/[-+*]/g, '<span class="op">$&</span>');
+      .replace(/[-+:]|\bx\b/g, '<span class="op">$&</span>');
 
     // And get rid of system elements
     html = html

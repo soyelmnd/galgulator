@@ -11,34 +11,37 @@
     <div class="basic pull-right col-sm-48">
       <div class="row">{%
         for key in [
-          ['(', 'op'],
-          [')', 'op'],
-          ['%', 'op'],
-          ['AC', 'fn'],
+          ['(', null, 'op'],
+          [')', null, 'op'],
+          ['%', null, 'op'],
+          ['AC', 'AC', 'fn'],
 
-          [7, 'no'],
-          [8, 'no'],
-          [9, 'no'],
-          [':', 'op'],
+          [7, 7, 'no'],
+          [8, 8, 'no'],
+          [9, 9, 'no'],
+          [':', ':', 'op'],
 
-          [4, 'no'],
-          [5, 'no'],
-          [6, 'no'],
-          ['x', 'op'],
+          [4, 4, 'no'],
+          [5, 5, 'no'],
+          [6, 6, 'no'],
+          ['x', 'x', 'op'],
 
-          [1, 'no'],
-          [2, 'no'],
-          [3, 'no'],
-          ['-', 'op'],
+          [1, 1, 'no'],
+          [2, 2, 'no'],
+          [3, 3, 'no'],
+          ['-', '-', 'op'],
 
-          [0, 'no'],
-          ['.', 'ex'],
-          ['=', 'is'],
-          ['+', 'op'],
+          [0, 0, 'no'],
+          ['.', '.', 'ex'],
+          ['=', '=', 'is'],
+          ['+', '+', 'op'],
         ]
       %}
         <div class="col-sm-21">
-          <button class="key {{ key[1] }}">{{ key[0] | safe }}</button>
+          <button class="key {{ key[2] }}"
+            data-key-data="{{ key[1] | safe }}">
+            {{ key[0] | safe }}
+          </button>
         </div>
       {% endfor %}
       </div>
@@ -51,27 +54,30 @@
 
       {%
         for key in [
-          ['x!', 'op'],
+          ['x!', null, 'op'],
 
-          ['Inv', 'op'],
-          ['sin', 'op'],
-          ['ln', 'op'],
+          ['Inv', null, 'op'],
+          ['sin', null, 'op'],
+          ['ln', null, 'op'],
 
-          ['&Pi;', 'op'],
-          ['cos', 'op'],
-          ['log', 'op'],
+          ['&Pi;', null, 'op'],
+          ['cos', null, 'op'],
+          ['log', null, 'op'],
 
-          ['e', 'op'],
-          ['tan', 'op'],
-          ['&radic;', 'op'],
+          ['e', null, 'op'],
+          ['tan', null, 'op'],
+          ['&radic;', null, 'op'],
 
-          ['ANS', 'op'],
-          ['EXP', 'op'],
-          ['x<sup>y</sup>', 'op'],
+          ['ANS', null, 'op'],
+          ['EXP', null, 'op'],
+          ['x<sup>y</sup>', '^', 'op'],
         ]
       %}
         <div class="col-sm-28">
-          <button class="key {{ key[1] }}">{{ key[0] | safe }}</button>
+          <button class="key {{ key[2] }}"
+            data-key-data="{{ key[1] | safe }}">
+            {{ key[0] | safe }}
+          </button>
         </div>
       {% endfor %}
       </div>
