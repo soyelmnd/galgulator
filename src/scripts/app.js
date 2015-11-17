@@ -6,8 +6,9 @@ import GalgulatorIOKeypad from './galgulator/io/keypad';
 Array.prototype.slice.call(document.getElementsByClassName('galgulator'))
 .forEach(el => {
   let galgulator = new Galgulator();
+  window.galgulator = galgulator;
 
-  Array.prototype.slice.call(el.getElementsByClassName('screen'))
+  Array.prototype.slice.call(el.querySelectorAll('.screen .q'))
   .forEach(screenEl => {
     galgulator.addIO(new GalgulatorIOScreen(screenEl))
   });

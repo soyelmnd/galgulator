@@ -21,11 +21,12 @@
 
   .screen {
     display: block;
+    margin: 0 0 (2 * @grid-gutter-width);
 
     .q {
       display: block;
       width: 100%;
-      margin: 0 0 (2 * @grid-gutter-width);
+      margin: 0;
       padding: 0 0.5rem;
       height: 2em;
       line-height: 2em;
@@ -33,6 +34,21 @@
       text-align: right;
       border: 1px solid @color-border;
       outline: 0;
+
+      .no, .op {
+        margin-left: 5px;
+      }
+      .expr {
+        &.pow {
+          >:first-child {
+            + * {
+              position: relative;
+              top: -0.25em;
+              font-size: 0.8em;
+            }
+          }
+        }
+      }
     }
   }
 
