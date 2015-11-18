@@ -30,7 +30,11 @@
         ]
       ]
     },
-    "swig": {}
+    "swig": {
+      "defaults": {
+        "cache": false
+      }
+    }
   },
   "path": {
     "source": {

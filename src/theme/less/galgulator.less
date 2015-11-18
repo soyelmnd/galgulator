@@ -1,18 +1,20 @@
 .galgulator {
   display: block;
-  margin: 2rem 0 0;
-  padding: 4 * @grid-gutter-width;
+  max-width: 555px;
   padding-bottom: @grid-gutter-width;
   border: 1px solid @color-border;
   box-shadow: @shadow-global;
+  user-select: none;
 
   .history-stack {
     display: block;
     height: 1.5em;
+    margin: 0 0 @grid-gutter-width;
     line-height: 1.5em;
     font-size: 0.8rem;
     text-align: right;
     overflow: hidden;
+    color: @color-gray-darker;
 
     .state {
       display: block;
@@ -22,6 +24,7 @@
   .screen {
     display: block;
     margin: 0 0 (2 * @grid-gutter-width);
+    cursor: pointer;
 
     .q {
       display: block;
@@ -56,11 +59,12 @@
     display: block;
     width: 100%;
     margin: 0 0 @grid-gutter-width;
-    height: 2em;
-    line-height: 2em;
+    height: 2.8em;
+    line-height: 2.8em;
     font-size: 1rem;
     border: 1px solid @color-border;
     background: @color-gray-dark;
+    color: @color-gray-darker;
     cursor: pointer;
 
     &:hover {
@@ -79,5 +83,99 @@
       background: @brand-primary;
       color: #fff;
     }
+  }
+
+  // Responsive spacing
+  & {
+    padding: @grid-gutter-width;
+    margin: 0 auto;
+  }
+  @media (min-width: @screen-sm-min) {
+    padding: 2 * @grid-gutter-width;
+    margin: 1rem auto 0;
+  }
+  @media (min-width: @screen-md-min) {
+    padding: 3 * @grid-gutter-width;
+    margin: 2rem auto 0;
+  }
+  @media (min-width: @screen-lg-min) {
+    padding: 4 * @grid-gutter-width;
+  }
+}
+
+.switch {
+  display: block;
+  position: relative;
+
+  &&& {
+    box-shadow: inset @shadow-global;
+    border: 0;
+  }
+
+  input {
+    display: none;
+  }
+
+  span {
+    float: left;
+    display: block;
+    width: 50%;
+    text-align: center;
+    font-size: 0.7rem;
+  }
+
+  i {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 50%;
+    height: 100%;
+    background: @color-gray-light;
+    border: 1px solid @color-border;
+    transition: transform 0.15s ease;
+    transform: translate3d(0, 0, 0);
+
+    &:before {
+      @color: @color-border;
+      @size: 2px;
+      @x: 7;
+      @y: 4;
+
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: block;
+      content: "";
+      width: 0;
+      height: 0;
+      background: transparent;
+      overflow: hidden;
+
+      margin-top: 0 - (@y - 1) * @size;
+      margin-left: 0 - (@x - 1) * @size;
+      .dots(@x, @y);
+
+      // x x x x x x x
+      // x x x x x x x
+      // x x x x x x x
+      // x x x x x x x
+      .dots(@max-col, @max-row) {
+        .loop-row(@r) when (@r < @max-row) {
+          .loop-col(@c) when (@c < @max-col) {
+            box-shadow+: (@c * @size * 2) (@r * @size * 2) 0 (0.5 * @size) @color;
+
+            .loop-col(@c + 1);
+          }
+          .loop-col(0);
+          .loop-row(@r + 1);
+        }
+        .loop-row(0);
+      }
+    }
+  }
+
+  input:checked ~ i {
+    transform: translate3d(100%, 0, 0);
   }
 }
