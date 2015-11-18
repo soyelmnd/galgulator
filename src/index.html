@@ -8,8 +8,14 @@
   <!-- endinject -->
 </head>
 <body>
-  <div class="container">
-    {% include './views/galgulator.html' %}
+  <div class="container-fluid">
+    <div class="row">
+    {% for i in Array(4) %}
+      <div class="col-md-42">
+        {% include './views/galgulator.html' %}
+      </div>
+    {% endfor %}
+    </div>
   </div>
   <!-- inject:js -->
   <!-- endinject -->
