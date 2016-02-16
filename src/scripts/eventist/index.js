@@ -118,7 +118,7 @@ export default class Eventist {
    * @return {Eventist} this
    */
   on(events, callback, flag) {
-    let listeners = this._eventListeners = this._eventListeners || {};
+    const listeners = this._eventListeners = this._eventListeners || {};
 
     // let's support multi event binding at a time
     //   separated by common delimiters, just like
@@ -152,11 +152,10 @@ export default class Eventist {
    */
   dispatchEvent(evt, args, origin) {
     if(this._eventListeners) {
-      let callbacks = this._eventListeners[evt]
-        , idx;
+      const callbacks = this._eventListeners[evt];
 
       if(callbacks && callbacks.length) {
-        for(idx in callbacks) {
+        for(let idx in callbacks) {
           callbacks[idx].call(this, origin || {}, args);
         }
       }

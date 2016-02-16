@@ -5,6 +5,11 @@ import Promise from '../promise';
  * @name Galgulator
  * @class
  * @extends Eventist
+ * @description
+ * The idea is we'll have a base galgulator, with just a CPU.
+ * All external components (keypad, screen, history stack ..) are IO, and should
+ * extend from IOAbstract, then could be added to the base galgulator. With this
+ * approach, we could extend it easy later.
  */
 export default class Galgulator extends Eventist {
   constructor() {
@@ -28,7 +33,7 @@ export default class Galgulator extends Eventist {
 
       this.broadcast('enqueue', {
         queue: this.queue,
-        op: op
+        op,
       });
     }
     return this;
@@ -36,24 +41,24 @@ export default class Galgulator extends Eventist {
 
   dequeue() {
     if(this.queue.length) {
-      let op = this.queue.pop();
+      const op = this.queue.pop();
 
       this.broadcast('dequeue', {
         queue: this.queue,
-        op: op
+        op,
       })
     }
     return this;
   }
 
   clear() {
-    let exQueue = this.queue;
+    const exQueue = this.queue;
 
     this.queue = [];
 
     this.broadcast('clear', {
       queue: this.queue,
-      exQueue: exQueue
+      exQueue,
     });
 
     return this;
@@ -61,7 +66,6 @@ export default class Galgulator extends Eventist {
 
   resolve() {
     let expression = this.queue.join('');
-    let self = this;
 
     // Remove spaces, trailing operators, and redundant 0
     expression = expression.replace(/\s+|\b0+|[^\d]+$/g, '');
@@ -69,15 +73,15 @@ export default class Galgulator extends Eventist {
     // Convert to js friendly
     expression = expression.replace(/x/gi, '*').replace(/:/gi, '/');
 
+    // TODO generalize this, use a lot
     // Handle pow by transforming
     //   x^y^z to Math.pow(x, Math.pow(y, z))
-    expression = expression.replace(/\d+(?:\^\d+)+/g, (exp) => {
-      let powOperands = exp.split('^')
-        , n = powOperands.length
-        , i = n - 2;
+    expression = expression.replace(/\d+(?:\^\d+)+/g, exp => {
+      const powOperands = exp.split('^');
+      const n = powOperands.length;
 
       let powExpression = powOperands[n - 1];
-      for(; i>-1; --i) {
+      for(let i=n-2; i>-1; --i) {
         powExpression = 'Math.pow(' + powOperands[i] + ',' + powExpression + ')';
       }
 
@@ -85,11 +89,12 @@ export default class Galgulator extends Eventist {
     });
 
     return new Promise((resolve, reject) => {
-      let result = new Function('return ' + expression)();
+      const result = new Function('return ' + expression)();
 
-      self.queue = [result];
-      self.broadcast('resolve', {
-        queue: self.queue
+      // Refresh the queue, and resolve
+      this.queue = [result];
+      this.broadcast('resolve', {
+        queue: this.queue,
       });
 
       resolve(result);

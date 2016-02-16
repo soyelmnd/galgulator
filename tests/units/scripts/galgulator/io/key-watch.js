@@ -7,7 +7,7 @@ describe('IOKeyWatch', () => {
   });
 
   it('should be instantiable', () => {
-    let keyWatch = new IOKeyWatch();
+    const keyWatch = new IOKeyWatch();
     expect(keyWatch).toBeDefined();
     expect(keyWatch instanceof IOAbstract).toBeTruthy();
   });

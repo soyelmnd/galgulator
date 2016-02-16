@@ -6,8 +6,8 @@ describe('Eventist', () => {
   });
 
   it('should have trigger working', () => {
-    let eventist = new Eventist()
-      , callback = jasmine.createSpy('onCallback');
+    const eventist = new Eventist();
+    const callback = jasmine.createSpy('onCallback');
 
     eventist.on('say', callback);
 
@@ -19,13 +19,13 @@ describe('Eventist', () => {
   });
 
   it('should have subscribe working', () => {
-    let ancestor = new Eventist()
-      , parent = new Eventist()
-      , child = new Eventist();
+    const ancestor = new Eventist();
+    const parent = new Eventist();
+    const child = new Eventist();
 
-    let ancestorCallback = jasmine.createSpy('ancestorCallback')
-      , parentCallback = jasmine.createSpy('parentCallback')
-      , childCallback = jasmine.createSpy('childCallback');
+    const ancestorCallback = jasmine.createSpy('ancestorCallback');
+    const parentCallback = jasmine.createSpy('parentCallback');
+    const childCallback = jasmine.createSpy('childCallback');
 
     ancestor.on('say', ancestorCallback);
     parent.on('say', parentCallback);

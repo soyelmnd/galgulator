@@ -7,7 +7,7 @@ describe('IOScreen', () => {
   });
 
   it('should be instantiable', () => {
-    let screen = new IOScreen();
+    const screen = new IOScreen();
     expect(screen).toBeDefined();
     expect(screen instanceof IOAbstract).toBeDefined();
   });
@@ -24,7 +24,7 @@ describe('IOScreen', () => {
     });
 
     it('should have render running with enqueue event', () => {
-      let domEl = {};
+      const domEl = {};
       screen.attachTo(domEl);
 
       spyOn(screen, 'render');

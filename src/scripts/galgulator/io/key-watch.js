@@ -9,10 +9,9 @@ export default class IOKeyWatch extends IOAbstract {
   attachTo(el) {
     this.el = el;
 
-    let self = this;
     el.tabIndex = 1;
-    el.addEventListener('keypress', (evt) => {
-      self.key(evt);
+    el.addEventListener('keypress', evt => {
+      this.key(evt);
     }, false);
   }
 
@@ -26,13 +25,14 @@ export default class IOKeyWatch extends IOAbstract {
     } else if(46 == evt.keyCode) {
       this.galgulator.clear();
     } else {
-      let keyString = evt.key;
+      const keyString = evt.key;
+
       if(
-        '^' == keyString
-        || '+' == keyString
-        || '-' == keyString
-        || 'x' == keyString
-        || ':' == keyString
+        '^' === keyString
+        || '+' === keyString
+        || '-' === keyString
+        || 'x' === keyString
+        || ':' === keyString
         || !isNaN(keyString)
       ) {
         this.galgulator.enqueue(keyString);

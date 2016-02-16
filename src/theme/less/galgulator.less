@@ -1,6 +1,7 @@
 .galgulator {
   display: block;
   max-width: 555px;
+  margin-bottom: 10px;
   padding-bottom: @grid-gutter-width;
   border: 1px solid @color-border;
   box-shadow: @shadow-global;
@@ -37,18 +38,21 @@
       text-align: right;
       border: 1px solid @color-border;
       outline: 0;
+    }
+  }
 
-      .no, .op {
-        margin-left: 5px;
-      }
-      .expr {
-        &.pow {
-          >:first-child {
-            + * {
-              position: relative;
-              top: -0.25em;
-              font-size: 0.8em;
-            }
+  // You know it, numbers, operands, expr ...
+  .screen, .history-stack {
+    .no, .op {
+      margin-left: 5px;
+    }
+    .expr {
+      &.pow {
+        >:first-child {
+          + * {
+            position: relative;
+            top: -0.25em;
+            font-size: 0.8em;
           }
         }
       }

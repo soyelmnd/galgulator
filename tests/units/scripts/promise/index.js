@@ -6,7 +6,7 @@ describe('Promise', () => {
   });
 
   it('should be instantiable', () => {
-    let promise = new Promise();
+    const promise = new Promise();
     expect(promise).toBeDefined();
 
     expect(promise.resolve).toBeDefined();
@@ -62,9 +62,9 @@ describe('Promise', () => {
 
   describe('handy constructor', () => {
     it('should have resolve working', (done) => {
-      let onSuccess = jasmine.createSpy('onSuccess');
-      let onError = jasmine.createSpy('onError');
-      let onFinal = jasmine.createSpy('onFinal');
+      const onSuccess = jasmine.createSpy('onSuccess');
+      const onError = jasmine.createSpy('onError');
+      const onFinal = jasmine.createSpy('onFinal');
 
       new Promise((resolve, reject) => {
         resolve('data');
@@ -84,9 +84,9 @@ describe('Promise', () => {
     });
 
     it('should have reject working', (done) => {
-      let onSuccess = jasmine.createSpy('onSuccess');
-      let onError = jasmine.createSpy('onError');
-      let onFinal = jasmine.createSpy('onFinal');
+      const onSuccess = jasmine.createSpy('onSuccess');
+      const onError = jasmine.createSpy('onError');
+      const onFinal = jasmine.createSpy('onFinal');
 
       new Promise((resolve, reject) => {
         reject('data');
@@ -104,5 +104,5 @@ describe('Promise', () => {
       .catch(onError)
       .finally(onFinal);
     });
-  })
-})
+  });
+});

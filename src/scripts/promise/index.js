@@ -10,11 +10,10 @@ export default class Promise {
     this.onError = [];
 
     if(process) {
-      let self = this;
       setTimeout(() => {
         process(
-          data => self.resolve(data),
-          data => self.reject(data)
+          data => this.resolve(data),
+          data => this.reject(data)
         );
       }, 0)
     }

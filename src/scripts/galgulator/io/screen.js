@@ -2,7 +2,8 @@ import IOAbstract from './abstract';
 
 export default class IOScreen extends IOAbstract {
   constructor(el) {
-    super();
+    super(el);
+
     el && this.attachTo(el);
   }
 
@@ -10,12 +11,16 @@ export default class IOScreen extends IOAbstract {
     this.el = el;
 
     this.on('enqueue dequeue clear resolve', (evt, data) => {
-      el.innerHTML = this.render(data);
+      el.innerHTML = this.render(data.queue);
     });
   }
 
-  render(data) {
-    let html = data.queue.join('');
+  /**
+   * @param {Array} galgulator queue
+   * @return {String} html
+   */
+  render(queue) {
+    let html = queue.join('');
 
     // Wrap the pow expression
     //
@@ -30,14 +35,13 @@ export default class IOScreen extends IOAbstract {
     //     span.expr.pow
     //     4
     //     5
-    html = html.replace(/(?:\d+\^)+\d*/g, (exp) => {
-      let powOperands = exp.split('^')
-        , n = powOperands.length
-        , i = n - 2;
+    html = html.replace(/(?:\d+\^)+\d*/g, exp => {
+      const powOperands = exp.split('^');
+      const n = powOperands.length;
 
       let powExpression = powOperands[n - 1] || '@placeholder@';
-      for(; i>-1; --i) {
-        powExpression = '<span class="expr pow">' + powOperands[i] + '@spliter@' + powExpression + '</span>';
+      for(let i=n-2; i>-1; --i) {
+        powExpression = `<span class="expr pow">${powOperands[i]}@spliter@${powExpression}</span>`;
       }
 
       return powExpression;

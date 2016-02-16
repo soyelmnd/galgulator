@@ -10,7 +10,7 @@ describe('IOAbstract', () => {
   it('should know its galgulator', () => {
     // shouldn't be instantiable, but ..
     //   this is the flexibly awesome javascript by the way
-    let ioAbstract = new IOAbstract();
+    const ioAbstract = new IOAbstract();
 
     // @see Galgulator
     expect(ioAbstract).toBeDefined();
@@ -19,10 +19,10 @@ describe('IOAbstract', () => {
   });
 
   it('should subscribe to galgulator', () => {
-    let galgulator = new Galgulator();
+    const galgulator = new Galgulator();
 
-    let ioA = new IOAbstract()
-      , ioB = new IOAbstract();
+    const ioA = new IOAbstract();
+    const ioB = new IOAbstract();
 
     spyOn(ioA, 'setGalgulator').and.callThrough();
     spyOn(ioB, 'setGalgulator').and.callThrough();

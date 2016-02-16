@@ -6,7 +6,7 @@ describe('uuid', () => {
   });
 
   it('should return nice-formatted string', () => {
-    let id = uuid();
+    const id = uuid();
     expect('string' == typeof id).toBeTruthy();
     expect(/^[a-z0-9]{4}(?:-[a-z0-9]{4}){3}$/i.test(id)).toBeTruthy();
   });

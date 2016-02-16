@@ -115,8 +115,8 @@ describe('Galgulator', () => {
     it('should be able to add io', () => {
       // Shouldn't init an abstract,
       //   but .. it's the ideal solution, by the way
-      let ioA = new IOAbstract()
-        , ioB = new IOAbstract();
+      const ioA = new IOAbstract();
+      const ioB = new IOAbstract();
 
       spyOn(ioA, 'setGalgulator');
       spyOn(ioB, 'setGalgulator');

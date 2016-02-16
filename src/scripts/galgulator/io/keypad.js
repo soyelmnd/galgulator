@@ -9,9 +9,8 @@ export default class IOKeypad extends IOAbstract {
   attachTo(el) {
     this.el = el;
 
-    let self = this;
-    el.addEventListener('click', (evt) => {
-      self.key(evt.target.dataset.keyData)
+    el.addEventListener('click', evt => {
+      this.key(evt.target.dataset.keyData);
     }, false);
   }
 
