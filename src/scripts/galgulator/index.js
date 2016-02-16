@@ -17,6 +17,7 @@ export default class Galgulator extends Eventist {
 
     this.ios = [];
     this.queue = [];
+    this.historyStack = [];
   }
 
   addIO(io) {
@@ -91,9 +92,13 @@ export default class Galgulator extends Eventist {
     return new Promise((resolve, reject) => {
       const result = new Function('return ' + expression)();
 
+      // Save the history
+      this.historyStack.push(this.queue);
+
       // Refresh the queue, and resolve
       this.queue = [result];
       this.broadcast('resolve', {
+        historyStack: this.historyStack,
         queue: this.queue,
       });
 
